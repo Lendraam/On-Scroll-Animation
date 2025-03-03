@@ -22,14 +22,15 @@ export default function Home() {
 
     // Efek Zoom-in pada gambar profil saat scroll
     const scrollY = window.scrollY;
-    const newScale = 1 + scrollY * 0.0005; // Maksimum zoom-in 1.2x
-    setScale(Math.min(newScale, 1.2));
-    controls.start({ scale: Math.min(newScale, 1.2) });
+    const newScale = Math.min(1 + scrollY * 0.0003, 1.2);
+    setScale(newScale);
+    controls.start({ scale: newScale });
   }, [controls]);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleScrollOptimized = () => requestAnimationFrame(handleScroll);
+    window.addEventListener("scroll", handleScrollOptimized);
+    return () => window.removeEventListener("scroll", handleScrollOptimized);
   }, [handleScroll]);
 
   const handleNavClick = (id: string) => {
@@ -56,6 +57,7 @@ export default function Home() {
         </ul>
       </nav>
 
+      {/* ✅ Home Section */}
       <section id="home" className="min-h-screen flex flex-col justify-center items-center text-center px-8 py-16">
         <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity }} className="mb-6">
           <Image src="/Len.jpg" alt="Lendra Profile" width={150} height={150} className="rounded-full shadow-lg" />
@@ -70,6 +72,7 @@ export default function Home() {
         </motion.div>
       </section>
 
+      {/* ✅ Dynamic Sections */}
       {["about", "history", "scientists"].map((section, index) => (
         <section key={section} id={section} className="min-h-screen bg-gray-100 flex flex-col justify-center items-center text-center px-8 py-16">
           <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -81,39 +84,10 @@ export default function Home() {
             </p>
           </motion.div>
           <motion.div className="rounded-lg overflow-hidden shadow-md mt-10" whileHover={{ scale: 1.1 }} transition={{ duration: 0.3 }}>
-            <Image src={`/helio${index + 1}.`} alt={section} width={400} height={250} className="rounded-lg" />
+            <Image src={`/helio${index + 1}.jpg`} alt={section} width={400} height={250} className="rounded-lg" />
           </motion.div>
         </section>
       ))}
-
-      {/* ✅ History Section */}
-      <section id="history" className="min-h-screen flex flex-col justify-center items-center text-center px-8 py-16">
-        <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <h2 className="text-3xl font-bold mb-4">History</h2>
-          <p className="text-lg max-w-2xl">
-            The heliocentric model was a revolutionary idea in the 16th century, replacing the geocentric model which placed Earth at the center of the universe.
-          </p>
-        </motion.div>
-
-        {/* ✅ Gambar dengan berbagai format */}
-        <div className="flex gap-4 mt-10">
-          {["png", "jpeg", "jpg"].map((ext, index) => (
-            <motion.div key={index} className="rounded-lg overflow-hidden shadow-md" whileHover={{ scale: 1.1 }} transition={{ duration: 0.3 }}>
-              <Image src={`/helio${index + 1}.${ext}`} alt={`Heliocentric Model ${index + 1}`} width={400} height={250} className="rounded-lg" />
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ✅ Scientists Section */}
-      <section id="scientists" className="min-h-screen bg-gray-100 flex flex-col justify-center items-center text-center px-8 py-16">
-        <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <h2 className="text-3xl font-bold mb-4">Scientists</h2>
-          <p className="text-lg max-w-2xl">
-            Key scientists who contributed to the heliocentric theory include Nicolaus Copernicus, Galileo Galilei, and Johannes Kepler.
-          </p>
-        </motion.div>
-      </section>
 
       {/* ✅ Contact Section */}
       <section id="contact" className="min-h-screen flex flex-col justify-center items-center text-center px-8 py-16 bg-white">
