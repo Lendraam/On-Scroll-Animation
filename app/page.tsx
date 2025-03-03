@@ -56,21 +56,35 @@ export default function Home() {
         </ul>
       </nav>
 
-      {/* ✅ Home Section */}
       <section id="home" className="min-h-screen flex flex-col justify-center items-center text-center px-8 py-16">
-        <motion.div animate={{ scale }} transition={{ duration: 0.2 }} className="mb-6">
-          <Image src="/Len.JPG" alt="Lendra Profile" width={150} height={150} className="rounded-full shadow-lg" />
+        <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Infinity }} className="mb-6">
+          <Image src="/Len.jpg" alt="Lendra Profile" width={150} height={150} className="rounded-full shadow-lg" />
         </motion.div>
-
         <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <h2 className="text-4xl font-bold mb-4">
-            Hello, I&apos;m <span className="text-yellow-500">Lendra</span>
+            Hello, I'm <span className="text-yellow-500">Lendra</span>
           </h2>
           <p className="text-lg max-w-2xl">
             I am passionate about science and the cosmos, focusing on the Heliocentric Theory.
           </p>
         </motion.div>
       </section>
+
+      {["about", "history", "scientists"].map((section, index) => (
+        <section key={section} id={section} className="min-h-screen bg-gray-100 flex flex-col justify-center items-center text-center px-8 py-16">
+          <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <h2 className="text-3xl font-bold mb-4">{section.charAt(0).toUpperCase() + section.slice(1)}</h2>
+            <p className="text-lg max-w-2xl">
+              {section === "about" && "The Heliocentric Theory places the Sun at the center of the solar system, introduced by Copernicus."}
+              {section === "history" && "The heliocentric model replaced the geocentric view, revolutionizing astronomy in the 16th century."}
+              {section === "scientists" && "Notable figures include Nicolaus Copernicus, Galileo Galilei, and Johannes Kepler."}
+            </p>
+          </motion.div>
+          <motion.div className="rounded-lg overflow-hidden shadow-md mt-10" whileHover={{ scale: 1.1 }} transition={{ duration: 0.3 }}>
+            <Image src={`/helio${index + 1}.`} alt={section} width={400} height={250} className="rounded-lg" />
+          </motion.div>
+        </section>
+      ))}
 
       {/* ✅ History Section */}
       <section id="history" className="min-h-screen flex flex-col justify-center items-center text-center px-8 py-16">
